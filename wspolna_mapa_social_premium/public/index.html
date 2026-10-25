@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wspólna Mapa</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header>
+    <div class="brand">⌖ <span>Wspólna Mapa</span></div>
+    <span class="pill" id="connection">Łączenie…</span>
+  </header>
+  <main>
+    <section class="panel">
+      <h1>Wasze pozycje, jedna mapa</h1>
+      <p class="sub">Utwórz pokój i wyślij kod zaufanej osobie. Pozycja pojawi się dopiero, gdy dana osoba sama włączy udostępnianie.</p>
+
+      <label for="name">Twoja nazwa</label>
+      <input id="name" maxlength="24" placeholder="Np. Alex" autocomplete="nickname">
+
+      <div class="actions">
+        <button id="create" class="primary">Utwórz pokój</button>
+      </div>
+
+      <div class="separator"><span>albo dołącz do pokoju</span></div>
+      <label for="room">Kod pokoju</label>
+      <input id="room" placeholder="Wpisz kod od znajomego" autocapitalize="none">
+      <button id="join">Dołącz</button>
+
+      <div id="roomInfo" class="room-info hidden">
+        <div class="room-title">Kod zaproszenia</div>
+        <div class="invite-row"><code id="roomCode"></code><button id="copy" class="small">Kopiuj</button></div>
+        <p class="hint">Wyślij kod drugiej osobie. Nie publikuj go publicznie.</p>
+      </div>
+
+      <div class="sharing">
+        <h2>Udostępnianie GPS</h2>
+        <p id="shareStatus" class="sub">Najpierw utwórz pokój lub dołącz do niego.</p>
+        <button id="share" class="primary" disabled>Włącz moje udostępnianie</button>
+        <button id="stop" class="danger" disabled>Zatrzymaj udostępnianie</button>
+      </div>
+
+      <section class="chat-card">
+        <div class="chat-heading"><div><h2>Czat pokoju</h2><p class="sub compact">Wiadomości widzą osoby w tym pokoju.</p></div><span class="chat-badge">LIVE</span></div>
+        <div id="chatMessages" class="chat-messages" aria-live="polite"><p class="muted">Dołącz do pokoju, aby rozpocząć rozmowę.</p></div>
+        <form id="chatForm" class="chat-form"><input id="chatInput" maxlength="500" placeholder="Napisz wiadomość…" autocomplete="off" disabled aria-label="Wiadomość"><button class="primary" id="chatSend" type="submit" disabled>Wyślij ↗</button></form>
+      </section>
+      <section class="feature-card">
+        <div class="feature-head"><div><span class="eyebrow">SOCIAL</span><h2>Znajomi</h2></div><span class="feature-icon">✦</span></div>
+        <p class="sub compact">Dodaj osobę z aktualnego pokoju do swojej listy znajomych na tym urządzeniu.</p>
+        <div id="friendsList" class="friends-list"><p class="muted">Twoja lista jest pusta.</p></div>
+      </section>
+      <section class="feature-card guess-card">
+        <div class="feature-head"><div><span class="eyebrow">MINI GRA</span><h2>Zgadnij lokalizację</h2></div><span class="feature-icon">⌖</span></div>
+        <p class="sub compact">Gra działa tylko wtedy, gdy druga osoba włączy GPS i tryb zgadywania. Jej pinezka zostanie ukryta, a serwer poda jedynie przybliżony wynik.</p>
+        <button id="guessMode" class="secondary" disabled>Włącz tryb zgadywania (udostępnij GPS)</button>
+        <p id="guessStatus" class="hint">Po włączeniu trybu kliknij na mapie, aby zgadnąć pozycję drugiej osoby.</p>
+        <button id="guessPick" disabled>Wybierz zgadywanie na mapie</button>
+      </section>
+      <h2>Osoby w pokoju</h2>
+      <div id="members" class="members"><p class="muted">Nie jesteś jeszcze w pokoju.</p></div>
+      <p class="privacy">Pozycje są przesyłane na żywo i przechowywane tylko w pamięci serwera. Administrator może zobaczyć adres IP połączenia w panelu /admin; zależnie od hostingu może to być adres proxy, a nie urządzenia. Nie publikuj tych danych dalej. Zamknięcie strony kończy połączenie, a zatrzymanie udostępniania wyłącza GPS. Dołączaj tylko wtedy, gdy zgadzasz się na te zasady.</p>
+    </section>
+    <section class="map-wrap">
+      <div id="map"></div>
+      <div class="map-caption">Mapa może wymagać połączenia z internetem.</div>
+    </section>
+  </main>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
